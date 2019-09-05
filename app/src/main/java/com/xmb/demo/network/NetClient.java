@@ -38,7 +38,8 @@ public class NetClient {
     }
 
     public void callNetGet(String url, final MyCallBack mCallback){
-        Request request = new Request.Builder().url(url).header("Content-Type", "application/json;charset=UTF-8").build();
+        String fullUrl = NetWorkUrl.Server_IP + url;
+        Request request = new Request.Builder().url(fullUrl).header("Content-Type", "application/json;charset=UTF-8").build();
         Call call = getNetClient().initOkHttpClient().newCall(request);
         call.enqueue(new Callback() {
             @Override
@@ -62,6 +63,7 @@ public class NetClient {
     }
 
     public void callNetPost(String url, final MyCallBack mCallback){
+        String fullUrl = NetWorkUrl.Server_IP + url;
         //构建FormBody，传入要提交的参数
         FormBody formBody = new FormBody
                 .Builder()
@@ -70,7 +72,7 @@ public class NetClient {
                 .build();
 
         Request request = new Request.Builder()
-                .url(url)
+                .url(fullUrl)
                 .post(formBody)
                 .build();
         Call call = getNetClient().initOkHttpClient().newCall(request);

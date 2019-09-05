@@ -2,6 +2,7 @@ package com.xmb.demo;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,38 +16,38 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import com.xmb.demo.entity.RecommendMeal;
 import com.xmb.demo.network.MyCallBack;
 import com.xmb.demo.network.NetClient;
+import com.xmb.demo.network.NetWorkUrl;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private WebView webView;
+    private TextView contentTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        contentTextView = (TextView) findViewById(R.id.contentTextView);
+        contentTextView.setText("获取不到内容!");
+    }
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        webView = (WebView) findViewById(R.id.webView);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "开始请求........................");
+        requestRecommendMeal();
+    }
 
-        String url = "http://192.168.0.108:8090/meal/recommend";
-//        String url = "https://www.baidu.com";
-        NetClient.getNetClient().callNetGet(url, new MyCallBack() {
+    //请求推荐餐饮
+    private void requestRecommendMeal() {
+        NetClient.getNetClient().callNetGet(NetWorkUrl.Recommend_Meal_Url, new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 //依据响应码判断下一步操作
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(String json) {
                 //使用传过来的json数据进行下一步操作
                 Log.i("a", "success result = " + json);
-                RecommendMeal recommendMeal = new RecommendMeal();
+                final RecommendMeal recommendMeal = new RecommendMeal();
                 if (!TextUtils.isEmpty(json)) {
                     try {
                         JSONObject jsonObject = new JSONObject(json);
@@ -65,19 +66,19 @@ public class MainActivity extends AppCompatActivity {
                         if (code == 200) {
                             JSONObject dataJSONObject = jsonObject.getJSONObject("data");
                             if (dataJSONObject != null) {
-                                if (!TextUtils.isEmpty(dataJSONObject.getString("soupBisque"))) {
+                                if (!isDataEmpty(dataJSONObject.getString("soupBisque"))) {
                                     recommendMeal.setSoupBisque(dataJSONObject.getString("soupBisque"));
                                 }
-                                if (!TextUtils.isEmpty(dataJSONObject.getString("soupBroth"))) {
+                                if (!isDataEmpty(dataJSONObject.getString("soupBroth"))) {
                                     recommendMeal.setSoupBroth(dataJSONObject.getString("soupBroth"));
                                 }
-                                if (!TextUtils.isEmpty(dataJSONObject.getString("vegetablesScrambledMeat"))) {
+                                if (!isDataEmpty(dataJSONObject.getString("vegetablesScrambledMeat"))) {
                                     recommendMeal.setVegetablesScrambledMeat(dataJSONObject.getString("vegetablesScrambledMeat"));
                                 }
-                                if (!TextUtils.isEmpty(dataJSONObject.getString("meat"))) {
+                                if (!isDataEmpty(dataJSONObject.getString("meat"))) {
                                     recommendMeal.setMeat(dataJSONObject.getString("meat"));
                                 }
-                                if (!TextUtils.isEmpty(dataJSONObject.getString("vegetables"))) {
+                                if (!isDataEmpty(dataJSONObject.getString("vegetables"))) {
                                     recommendMeal.setVegetables(dataJSONObject.getString("vegetables"));
                                 }
                             }
@@ -87,29 +88,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 Log.i(TAG, recommendMeal.toString());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        contentTextView.setText(recommendMeal.parseShowContent());
+                    }
+                });
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    //判断返回的数据是否为空
+    private boolean isDataEmpty(String data) {
+        return TextUtils.isEmpty(data) || data.equals("null");
     }
 }
