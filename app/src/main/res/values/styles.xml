@@ -20,8 +20,22 @@
     <style name="clock_time_number_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/clock_number_green</item>
         <item name="android:textSize">@dimen/clock_time</item>
         <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="clock_number_area_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/clock_backgroud_black</item>
+    </style>
+
+    <style name="clock_time_area_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:orientation">horizontal</item>
     </style>
 </resources>
