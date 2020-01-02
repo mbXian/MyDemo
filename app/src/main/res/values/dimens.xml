@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="clock_time">220px</dimen>
+    <dimen name="clock_date">50px</dimen>
 </resources>
