@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/clock_number_green"
                 android:layout_marginLeft="50px"
-                android:textSize="@dimen/clock_date"
+                android:textSize="@dimen/clock_date_text_size"
                 android:text="0"/>
 
             <TextView
@@ -144,7 +144,16 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/clock_number_green"
                 android:layout_marginLeft="50px"
-                android:textSize="@dimen/clock_date"
+                android:textSize="@dimen/clock_date_text_size"
+                android:text="0"/>
+
+            <TextView
+                android:id="@+id/batteryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/clock_number_green"
+                android:layout_marginLeft="50px"
+                android:textSize="@dimen/clock_date_text_size"
                 android:text="0"/>
 
         </LinearLayout>

@@ -21,7 +21,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/clock_number_green</item>
-        <item name="android:textSize">@dimen/clock_time</item>
+        <item name="android:textSize">@dimen/clock_time_text_size</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
 
