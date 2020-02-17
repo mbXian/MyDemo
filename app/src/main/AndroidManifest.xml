@@ -12,7 +12,6 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="reverseLandscape"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,3 +23,5 @@
     </application>
 
 </manifest>
+    <!--横屏-->
+    <!--android:screenOrientation="reverseLandscape"-->
