@@ -11,7 +11,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ClockMainActivity"
+            android:name=".MainActivity"
             android:screenOrientation="reverseLandscape"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
