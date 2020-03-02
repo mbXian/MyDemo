@@ -1,13 +1,19 @@
 package com.xmb.demo.network;
 
+import android.util.JsonWriter;
+
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -62,18 +68,20 @@ public class NetClient {
         });
     }
 
-    public void callNetPost(String url, final MyCallBack mCallback){
+    public void callNetPost(String url, JSONObject paramsJSON, final MyCallBack mCallback){
         String fullUrl = NetWorkUrl.Server_IP + url;
         //构建FormBody，传入要提交的参数
-        FormBody formBody = new FormBody
-                .Builder()
-                .add("username", "initObject")
-                .add("password", "initObject")
-                .build();
+//        FormBody formBody = new FormBody
+//                .Builder()
+//                .add("username", "initObject")
+//                .add("password", "initObject")
+//                .build();
 
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), paramsJSON.toString());
         Request request = new Request.Builder()
+                .header("Content-Type", "application/json;charset=UTF-8")
                 .url(fullUrl)
-                .post(formBody)
+                .post(requestBody)
                 .build();
         Call call = getNetClient().initOkHttpClient().newCall(request);
 
@@ -89,7 +97,7 @@ public class NetClient {
                 //请求网络成功说明服务器有响应，但返回的是什么我们无法确定，可以根据响应码判断
                 if (response.code() == 200) {
                     //如果是200说明正常，调用MyCallBack的成功方法，传入数据
-                    mCallback.onResponse(response.body().toString());
+                    mCallback.onResponse(response.body().string());
                 }else{
                     //如果不是200说明异常，调用MyCallBack的失败方法将响应码传入
                     mCallback.onFailure(response.code());
