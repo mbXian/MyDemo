@@ -15,4 +15,5 @@ public class NetWorkUrl {
     public static final String Recommend_Meal_Url = "/meal/recommend";
 
     public static final String Book_detail_Url = "/book/getContent";
+    public static final String Book_count_Url = "/book/getTotalChapter";
 }

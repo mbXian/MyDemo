@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,12 @@ import android.widget.Toast;
 import com.xmb.demo.R;
 import com.xmb.demo.adapter.BookRecycleAdapter;
 import com.xmb.demo.listener.BookRecycleViewItemClickListener;
+import com.xmb.demo.network.MyCallBack;
+import com.xmb.demo.network.NetClient;
+import com.xmb.demo.network.NetWorkUrl;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +50,7 @@ public class BookMainActivity extends Activity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-
-        List<String> dataList = new ArrayList<>();
-        final int ChapterTotal = 1098;
-        for (int i = 0; i < 1098; i++) {
-            dataList.add(i + "");
-        }
+        final List<String> dataList = new ArrayList<>();
 
         // specify an adapter (see also next example)
         mAdapter = new BookRecycleAdapter(dataList, new BookRecycleViewItemClickListener() {
@@ -61,6 +63,59 @@ public class BookMainActivity extends Activity {
             }
         });
         recyclerView.setAdapter(mAdapter);
+
+        NetClient.getNetClient().callNetPost(NetWorkUrl.Book_count_Url, new JSONObject(), new MyCallBack() {
+            @Override
+            public void onFailure(int code) {
+                Toast.makeText(BookMainActivity.this, "请求失败", Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onResponse(final String json) {
+                if (!TextUtils.isEmpty(json)) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        int code = jsonObject.getInt("code");
+                        if (code == 200) {
+                            final Long totalChapter = jsonObject.getLong("data");
+                            if (totalChapter != null) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        for (int i = 0; i < totalChapter; i++) {
+                                            dataList.add(i + "");
+                                        }
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                            }
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(BookMainActivity.this, "请求失败", Toast.LENGTH_SHORT);
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(BookMainActivity.this, "请求失败", Toast.LENGTH_SHORT);
+                            }
+                        });
+                    }
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(BookMainActivity.this, "请求失败", Toast.LENGTH_SHORT);
+                        }
+                    });
+                }
+            }
+        });
 
     }
 }
