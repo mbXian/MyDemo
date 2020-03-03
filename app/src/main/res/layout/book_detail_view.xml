@@ -12,6 +12,7 @@
         android:scrollbars="vertical"
         android:editable="false"
         android:singleLine="false"
+        android:textSize="50dp"
         />
 
 </RelativeLayout>

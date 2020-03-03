@@ -57,7 +57,12 @@ public class BookDetailActivity extends Activity {
         NetClient.getNetClient().callNetPost(NetWorkUrl.Book_detail_Url, jsonObject, new MyCallBack() {
             @Override
             public void onFailure(int code) {
-                Toast.makeText(BookDetailActivity.this, "请求失败", Toast.LENGTH_SHORT);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.setText("请求失败，请重试");
+                    }
+                });
             }
 
             @Override
@@ -67,12 +72,29 @@ public class BookDetailActivity extends Activity {
                         JSONObject jsonObject = new JSONObject(json);
                         int code = jsonObject.getInt("code");
                         if (code == 200) {
-                            final String message = jsonObject.getString("message");
-                            if (message != null) {
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            if (data != null) {
+                                final String content = data.getString("content");
+                                if (content != null) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            textView.setText(content);
+                                        }
+                                    });
+                                } else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            textView.setText("请求失败，请重试");
+                                        }
+                                    });
+                                }
+                            } else {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        textView.setText(message);
+                                        textView.setText("请求失败，请重试");
                                     }
                                 });
                             }
@@ -80,7 +102,7 @@ public class BookDetailActivity extends Activity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    textView.setText("请求失败");
+                                    textView.setText("请求失败，请重试");
                                 }
                             });
                         }
@@ -89,7 +111,7 @@ public class BookDetailActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                textView.setText("请求失败");
+                                textView.setText("请求失败，请重试");
                             }
                         });
                     }
@@ -97,7 +119,7 @@ public class BookDetailActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            textView.setText("请求失败");
+                            textView.setText("请求失败，请重试");
                         }
                     });
                 }

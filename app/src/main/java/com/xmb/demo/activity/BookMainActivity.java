@@ -3,25 +3,19 @@ package com.xmb.demo.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.xmb.demo.R;
 import com.xmb.demo.adapter.BookRecycleAdapter;
 import com.xmb.demo.listener.BookRecycleViewItemClickListener;
 import com.xmb.demo.network.MyCallBack;
 import com.xmb.demo.network.NetClient;
 import com.xmb.demo.network.NetWorkUrl;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,12 +29,17 @@ public class BookMainActivity extends Activity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private TextView titleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_main_recycleview);
         recyclerView = (RecyclerView) findViewById(R.id.book_recycler_view);
+        titleTextView = (TextView) findViewById(R.id.book_title_text_view);
+
+        titleTextView.setText("《上门龙婿免费全文阅读》\n" +
+                "作者:叶辰");
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -58,7 +57,7 @@ public class BookMainActivity extends Activity {
             public void onClick(int position) {
                 Intent intent = new Intent();
                 intent.setClass(BookMainActivity.this, BookDetailActivity.class);
-                intent.putExtra("chapterNum", position);
+                intent.putExtra("chapterNum", position + 1);
                 startActivity(intent);
             }
         });
@@ -67,7 +66,12 @@ public class BookMainActivity extends Activity {
         NetClient.getNetClient().callNetPost(NetWorkUrl.Book_count_Url, new JSONObject(), new MyCallBack() {
             @Override
             public void onFailure(int code) {
-                Toast.makeText(BookMainActivity.this, "请求失败", Toast.LENGTH_SHORT);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(BookMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
@@ -88,12 +92,19 @@ public class BookMainActivity extends Activity {
                                         mAdapter.notifyDataSetChanged();
                                     }
                                 });
+                            } else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(BookMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         } else {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(BookMainActivity.this, "请求失败", Toast.LENGTH_SHORT);
+                                    Toast.makeText(BookMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -102,7 +113,7 @@ public class BookMainActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(BookMainActivity.this, "请求失败", Toast.LENGTH_SHORT);
+                                Toast.makeText(BookMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -110,7 +121,7 @@ public class BookMainActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(BookMainActivity.this, "请求失败", Toast.LENGTH_SHORT);
+                            Toast.makeText(BookMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
