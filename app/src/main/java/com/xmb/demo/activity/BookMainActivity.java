@@ -14,6 +14,8 @@ import com.xmb.demo.listener.BookRecycleViewItemClickListener;
 import com.xmb.demo.network.MyCallBack;
 import com.xmb.demo.network.NetClient;
 import com.xmb.demo.network.NetWorkUrl;
+import com.xmb.demo.utils.BookSharedPreferencesUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -90,6 +92,10 @@ public class BookMainActivity extends Activity {
                                             dataList.add(i + "");
                                         }
                                         mAdapter.notifyDataSetChanged();
+
+                                        int chapterNum = BookSharedPreferencesUtils.instants(BookMainActivity.this).getChapterNum();
+                                        System.out.println("chapterNum = " + chapterNum);
+                                        recyclerView.scrollToPosition(chapterNum);
                                     }
                                 });
                             } else {

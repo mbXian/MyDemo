@@ -15,6 +15,7 @@ import com.xmb.demo.adapter.BookRecycleAdapter;
 import com.xmb.demo.network.MyCallBack;
 import com.xmb.demo.network.NetClient;
 import com.xmb.demo.network.NetWorkUrl;
+import com.xmb.demo.utils.BookSharedPreferencesUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +48,8 @@ public class BookDetailActivity extends Activity {
     }
 
     private void getContent(int chapterNum) {
+        final int chapterNumSave = chapterNum;
+
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("chapterNum", chapterNum);
@@ -80,6 +83,8 @@ public class BookDetailActivity extends Activity {
                                         @Override
                                         public void run() {
                                             textView.setText(content);
+
+                                            BookSharedPreferencesUtils.instants(BookDetailActivity.this).saveChapterNum(chapterNumSave);
                                         }
                                     });
                                 } else {
