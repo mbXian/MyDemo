@@ -1,15 +1,10 @@
 package com.xmb.demo.network;
 
-import android.util.JsonWriter;
-
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -70,12 +65,6 @@ public class NetClient {
 
     public void callNetPost(String url, JSONObject paramsJSON, final MyCallBack mCallback){
         String fullUrl = NetWorkUrl.Server_IP + url;
-        //构建FormBody，传入要提交的参数
-//        FormBody formBody = new FormBody
-//                .Builder()
-//                .add("username", "initObject")
-//                .add("password", "initObject")
-//                .build();
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), paramsJSON.toString());
         Request request = new Request.Builder()
