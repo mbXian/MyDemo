@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColor="@color/clock_backgroud_black"
+        android:background="@color/book_backgroud_yellow"
         android:textSize="50dp"/>
 
     <LinearLayout
