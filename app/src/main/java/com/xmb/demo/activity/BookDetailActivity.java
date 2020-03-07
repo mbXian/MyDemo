@@ -84,7 +84,7 @@ public class BookDetailActivity extends Activity {
                                         public void run() {
                                             textView.setText(content);
 
-                                            BookSharedPreferencesUtils.instants(BookDetailActivity.this).saveChapterNum(chapterNumSave);
+                                            BookSharedPreferencesUtils.instants(BookDetailActivity.this).saveChapterNum(chapterNumSave - 1);
                                         }
                                     });
                                 } else {

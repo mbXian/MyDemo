@@ -94,7 +94,6 @@ public class BookMainActivity extends Activity {
                                         mAdapter.notifyDataSetChanged();
 
                                         int chapterNum = BookSharedPreferencesUtils.instants(BookMainActivity.this).getChapterNum();
-                                        System.out.println("chapterNum = " + chapterNum);
                                         recyclerView.scrollToPosition(chapterNum);
                                     }
                                 });
@@ -133,6 +132,12 @@ public class BookMainActivity extends Activity {
                 }
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mAdapter.notifyDataSetChanged();
     }
 }

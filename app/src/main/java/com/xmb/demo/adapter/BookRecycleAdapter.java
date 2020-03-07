@@ -1,12 +1,16 @@
 package com.xmb.demo.adapter;
 
+import android.app.Application;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.xmb.demo.R;
+import com.xmb.demo.activity.BookMainActivity;
 import com.xmb.demo.listener.BookRecycleViewItemClickListener;
+import com.xmb.demo.utils.BookSharedPreferencesUtils;
 
 import java.util.List;
 
@@ -24,10 +28,14 @@ public class BookRecycleAdapter extends RecyclerView.Adapter<BookRecycleAdapter.
         // each data item is just a string in this case
         public View view;
         public TextView titleTextView;
+        public ImageView tagImageView;
+        ViewGroup viewGroup;
+
         public MyViewHolder(View v) {
             super(v);
             view = v;
             titleTextView = view.findViewById(R.id.book_recycler_view_adapter_title_textView);
+            tagImageView = view.findViewById(R.id.tagImageView);
         }
     }
 
@@ -42,6 +50,7 @@ public class BookRecycleAdapter extends RecyclerView.Adapter<BookRecycleAdapter.
     public BookRecycleAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
         MyViewHolder myViewHolder = new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.book_recycle_adapter, parent, false));
+        myViewHolder.viewGroup = parent;
         return myViewHolder;
     }
 
@@ -57,6 +66,13 @@ public class BookRecycleAdapter extends RecyclerView.Adapter<BookRecycleAdapter.
                 }
             }
         });
+        int chapterNum = BookSharedPreferencesUtils.instants(holder.viewGroup.getContext()).getChapterNum();
+        if (position == chapterNum) {
+            holder.tagImageView.setVisibility(View.VISIBLE);
+        } else {
+            holder.tagImageView.setVisibility(View.GONE);
+        }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
