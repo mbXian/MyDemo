@@ -12,6 +12,8 @@ import com.xmb.demo.activity.BookMainActivity;
 import com.xmb.demo.listener.BookRecycleViewItemClickListener;
 import com.xmb.demo.utils.BookSharedPreferencesUtils;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -28,14 +30,14 @@ public class BookRecycleAdapter extends RecyclerView.Adapter<BookRecycleAdapter.
         // each data item is just a string in this case
         public View view;
         public TextView titleTextView;
-        public ImageView tagImageView;
+        public TextView tagTextView;
         ViewGroup viewGroup;
 
         public MyViewHolder(View v) {
             super(v);
             view = v;
             titleTextView = view.findViewById(R.id.book_recycler_view_adapter_title_textView);
-            tagImageView = view.findViewById(R.id.tagImageView);
+            tagTextView = view.findViewById(R.id.tagTextView);
         }
     }
 
@@ -68,9 +70,9 @@ public class BookRecycleAdapter extends RecyclerView.Adapter<BookRecycleAdapter.
         });
         int chapterNum = BookSharedPreferencesUtils.instants(holder.viewGroup.getContext()).getChapterNum();
         if (position == chapterNum) {
-            holder.tagImageView.setVisibility(View.VISIBLE);
+            holder.tagTextView.setVisibility(View.VISIBLE);
         } else {
-            holder.tagImageView.setVisibility(View.GONE);
+            holder.tagTextView.setVisibility(View.GONE);
         }
 
     }
