@@ -14,6 +14,8 @@ import com.xmb.demo.network.NetWorkUrl;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 /**
  * Author by Ben
  * On 2020-03-07.
@@ -23,18 +25,43 @@ import org.json.JSONObject;
 public class WorkoutMainActivity extends Activity {
 
     private Button uploadButton;
+    private Button startButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.workout_main);
 
+        final JSONObject paramJsonObject = new JSONObject();
+
         uploadButton = findViewById(R.id.uploadButton);
+        startButton = findViewById(R.id.startButton);
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    paramJsonObject.put("trainTimeMilliSec", new Date().getTime());
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            startButton.setVisibility(View.GONE);
+                            uploadButton.setVisibility(View.VISIBLE);
+                        }
+                    });
+                } catch (Exception e) {
+
+                }
+            }
+        });
+
+        uploadButton.setVisibility(View.GONE);
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL, new JSONObject(), new MyCallBack() {
+                NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL, paramJsonObject, new MyCallBack() {
                     @Override
                     public void onFailure(int code) {
                         runOnUiThread(new Runnable() {
@@ -55,6 +82,7 @@ public class WorkoutMainActivity extends Activity {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            uploadButton.setEnabled(false);
                                             Toast.makeText(WorkoutMainActivity.this, "Upload Success! Keep it!", Toast.LENGTH_SHORT).show();
                                         }
                                     });
