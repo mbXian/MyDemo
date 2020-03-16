@@ -9,7 +9,7 @@ package com.xmb.demo.network;
 public class NetWorkUrl {
     //服务器IP
 //    public static final String Server_IP = "http://xian.seaven.cn:8090";
-    public static final String Server_IP = "http://95.163.195.25:8090";
+    public static final String Server_IP = "http://111.229.74.28:8090";
 //    public static final String Server_IP = "http://192.168.1.103:8090";
 
     //推荐餐饮
