@@ -26,8 +26,9 @@ public class NetClient {
     private OkHttpClient initOkHttpClient(){
         //初始化的时候可以自定义一些参数
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(10000, TimeUnit.MILLISECONDS)//设置读取超时为10秒
-                .connectTimeout(10000, TimeUnit.MILLISECONDS)//设置链接超时为10秒
+                .readTimeout(30000, TimeUnit.MILLISECONDS)//设置读取超时为30秒
+                .writeTimeout(30000, TimeUnit.MILLISECONDS)//设置写超时为30秒
+                .connectTimeout(30000, TimeUnit.MILLISECONDS)//设置链接超时为30秒
                 .build();
         return okHttpClient;
     }
