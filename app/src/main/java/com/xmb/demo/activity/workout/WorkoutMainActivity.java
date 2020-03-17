@@ -61,59 +61,47 @@ public class WorkoutMainActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL, paramJsonObject, new MyCallBack() {
-                    @Override
-                    public void onFailure(int code) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(WorkoutMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+            NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL, paramJsonObject, new MyCallBack() {
+                @Override
+                public void onFailure(int code) {
+                    showErrorTips("请求失败，请重试");
+                }
 
-                    @Override
-                    public void onResponse(final String json) {
-                        if (!TextUtils.isEmpty(json)) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(json);
-                                int code = jsonObject.getInt("code");
-                                if (code == 200) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            uploadButton.setEnabled(false);
-                                            Toast.makeText(WorkoutMainActivity.this, "Upload Success! Keep it!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                } else {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(WorkoutMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                @Override
+                public void onResponse(final String json) {
+                    if (!TextUtils.isEmpty(json)) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(json);
+                            int code = jsonObject.getInt("code");
+                            if (code == 200) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(WorkoutMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
+                                        uploadButton.setEnabled(false);
+                                        Toast.makeText(WorkoutMainActivity.this, "Upload Success! Keep it!", Toast.LENGTH_SHORT).show();
                                     }
                                 });
+                            } else {
+                                showErrorTips("请求失败，请重试");
                             }
-                        } else {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(WorkoutMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            showErrorTips("请求失败，请重试");
                         }
+                    } else {
+                        showErrorTips("请求失败，请重试");
                     }
-                });
+                }
+            });
+            }
+        });
+    }
 
+    private void showErrorTips(final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(WorkoutMainActivity.this, msg, Toast.LENGTH_LONG).show();
             }
         });
     }
