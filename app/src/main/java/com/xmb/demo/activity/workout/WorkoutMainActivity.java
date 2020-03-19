@@ -16,6 +16,7 @@ import com.xmb.demo.network.MyCallBack;
 import com.xmb.demo.network.NetClient;
 import com.xmb.demo.network.NetWorkUrl;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,6 +32,8 @@ public class WorkoutMainActivity extends Activity {
 
     private Button uploadButton;
     private Button startButton;
+    private Button refreshButton;
+    private EditText statisticsEditText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +44,15 @@ public class WorkoutMainActivity extends Activity {
 
         uploadButton = findViewById(R.id.uploadButton);
         startButton = findViewById(R.id.startButton);
+        refreshButton = findViewById(R.id.refreshButton);
+        statisticsEditText = findViewById(R.id.statisticsEditText);
+
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestStatisticsData();
+            }
+        });
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +139,99 @@ public class WorkoutMainActivity extends Activity {
             public void onClick(View view) {
                 uploadPasswordEditText.setText("");
                 alertDialog.show();
+            }
+        });
+
+        requestStatisticsData();
+    }
+
+    private void requestStatisticsData() {
+        final StringBuilder statisticsDataStringBuilderToday = new StringBuilder();
+        statisticsDataStringBuilderToday.append("今日数据统计：\n");
+
+        final StringBuilder statisticsDataStringBuilderTonow = new StringBuilder();
+        statisticsDataStringBuilderTonow.append("至今数据统计：\n");
+
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TODAY_STATISTICS_URL, new JSONObject(), new MyCallBack() {
+            @Override
+            public void onFailure(int code) {
+                statisticsDataStringBuilderToday.append("获取失败！");
+
+                showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+            }
+
+            @Override
+            public void onResponse(String json) {
+                if (!TextUtils.isEmpty(json)) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        int code = jsonObject.getInt("code");
+                        if (code == 200) {
+                            JSONObject jsonObjectData = jsonObject.getJSONObject("data");
+                            if (jsonObjectData != null) {
+                                JSONArray jsonArray = jsonObjectData.getJSONArray("statisticsEachTypeVOList");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject vo = (JSONObject)jsonArray.get(i);
+                                    statisticsDataStringBuilderToday.append(vo.getString("nameCN") + ": " + vo.getLong("countTotal") + "\n");
+                                }
+                            }
+                        } else {
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                } else {
+
+                }
+                showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+            }
+        });
+
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TONOW_STATISTICS_URL, new JSONObject(), new MyCallBack() {
+            @Override
+            public void onFailure(int code) {
+                statisticsDataStringBuilderTonow.append("获取失败！");
+
+                showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+            }
+
+            @Override
+            public void onResponse(String json) {
+                if (!TextUtils.isEmpty(json)) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        int code = jsonObject.getInt("code");
+                        if (code == 200) {
+                            JSONObject jsonObjectData = jsonObject.getJSONObject("data");
+                            if (jsonObjectData != null) {
+                                JSONArray jsonArray = jsonObjectData.getJSONArray("statisticsEachTypeVOList");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject vo = (JSONObject)jsonArray.get(i);
+                                    statisticsDataStringBuilderTonow.append(vo.getString("nameCN") + ": " + vo.getLong("countTotal") + "\n");
+                                }
+                            }
+                        } else {
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+                } else {
+
+                }
+                showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+            }
+        });
+    }
+
+    private void showStatisticsData(final StringBuilder statisticsDataStringBuilderToday, final StringBuilder statisticsDataStringBuilderTonow) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                statisticsEditText.setText(statisticsDataStringBuilderToday.toString() + "\n\n" + statisticsDataStringBuilderTonow.toString());
             }
         });
     }
