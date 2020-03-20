@@ -147,10 +147,10 @@ public class WorkoutMainActivity extends Activity {
 
     private void requestStatisticsData() {
         final StringBuilder statisticsDataStringBuilderToday = new StringBuilder();
-        statisticsDataStringBuilderToday.append("今日数据统计：\n");
+        statisticsDataStringBuilderToday.append("Statistics Today（今日数据统计）：\n");
 
         final StringBuilder statisticsDataStringBuilderTonow = new StringBuilder();
-        statisticsDataStringBuilderTonow.append("至今数据统计：\n");
+        statisticsDataStringBuilderTonow.append("Statistics So Far（至今数据统计）：\n");
 
         NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TODAY_STATISTICS_URL, new JSONObject(), new MyCallBack() {
             @Override
@@ -162,6 +162,9 @@ public class WorkoutMainActivity extends Activity {
 
             @Override
             public void onResponse(String json) {
+
+                boolean requestDataSuccess = false;
+
                 if (!TextUtils.isEmpty(json)) {
                     try {
                         JSONObject jsonObject = new JSONObject(json);
@@ -169,21 +172,29 @@ public class WorkoutMainActivity extends Activity {
                         if (code == 200) {
                             JSONObject jsonObjectData = jsonObject.getJSONObject("data");
                             if (jsonObjectData != null) {
+                                Long duration = jsonObjectData.getLong("duration");
                                 JSONArray jsonArray = jsonObjectData.getJSONArray("statisticsEachTypeVOList");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject vo = (JSONObject)jsonArray.get(i);
-                                    statisticsDataStringBuilderToday.append(vo.getString("nameCN") + ": " + vo.getLong("countTotal") + "\n");
-                                }
-                            }
-                        } else {
 
+                                if (jsonArray.length() == 0 || duration == null || duration == 0) {
+                                    statisticsDataStringBuilderToday.append("You have not train today. Come on!\n");
+                                } else {
+                                    statisticsDataStringBuilderToday.append("Duration minutes（耗时分钟）：" + (duration / 60) + "\n");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject vo = (JSONObject)jsonArray.get(i);
+                                        statisticsDataStringBuilderToday.append(vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n");
+                                    }
+                                }
+
+                                requestDataSuccess = true;
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
 
                     }
-                } else {
-
+                }
+                if (!requestDataSuccess) {
+                    statisticsDataStringBuilderToday.append("获取失败！");
                 }
                 showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
@@ -199,6 +210,9 @@ public class WorkoutMainActivity extends Activity {
 
             @Override
             public void onResponse(String json) {
+
+                boolean requestDataSuccess = false;
+
                 if (!TextUtils.isEmpty(json)) {
                     try {
                         JSONObject jsonObject = new JSONObject(json);
@@ -206,21 +220,29 @@ public class WorkoutMainActivity extends Activity {
                         if (code == 200) {
                             JSONObject jsonObjectData = jsonObject.getJSONObject("data");
                             if (jsonObjectData != null) {
+                                Long duration = jsonObjectData.getLong("duration");
                                 JSONArray jsonArray = jsonObjectData.getJSONArray("statisticsEachTypeVOList");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject vo = (JSONObject)jsonArray.get(i);
-                                    statisticsDataStringBuilderTonow.append(vo.getString("nameCN") + ": " + vo.getLong("countTotal") + "\n");
-                                }
-                            }
-                        } else {
 
+                                if (jsonArray.length() == 0 || duration == null || duration == 0) {
+                                    statisticsDataStringBuilderTonow.append("You have not train so far. Come on!\n");
+                                } else {
+                                    statisticsDataStringBuilderTonow.append("Duration minutes（耗时分钟）：" + (duration / 60) + "\n");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject vo = (JSONObject)jsonArray.get(i);
+                                        statisticsDataStringBuilderTonow.append(vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n");
+                                    }
+                                }
+
+                                requestDataSuccess = true;
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
 
                     }
-                } else {
-
+                }
+                if (!requestDataSuccess) {
+                    statisticsDataStringBuilderTonow.append("获取失败！");
                 }
                 showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }

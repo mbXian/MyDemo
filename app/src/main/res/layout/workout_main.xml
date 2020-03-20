@@ -14,8 +14,9 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_height="match_parent"
+        android:layout_below="@id/refreshButton"
+        android:layout_above="@id/startButton"
         android:enabled="false"
         android:id="@+id/statisticsEditText"
         />
