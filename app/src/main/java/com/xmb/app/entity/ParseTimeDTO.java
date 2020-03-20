@@ -1,4 +1,4 @@
-package com.xmb.demo.entity;
+package com.xmb.app.entity;
 
 import android.content.Intent;
 

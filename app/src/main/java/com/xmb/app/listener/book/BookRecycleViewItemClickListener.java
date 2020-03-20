@@ -1,4 +1,4 @@
-package com.xmb.demo.listener.book;
+package com.xmb.app.listener.book;
 
 /**
  * Author by Ben

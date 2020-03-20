@@ -1,4 +1,4 @@
-package com.xmb.demo.activity.book;
+package com.xmb.app.activity.book;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
 
-import com.xmb.demo.R;
-import com.xmb.demo.network.MyCallBack;
-import com.xmb.demo.network.NetClient;
-import com.xmb.demo.network.NetWorkUrl;
-import com.xmb.demo.utils.book.BookSharedPreferencesUtils;
+import com.xmb.app.R;
+import com.xmb.app.utils.book.BookSharedPreferencesUtils;
+import com.xmb.app.network.MyCallBack;
+import com.xmb.app.network.NetClient;
+import com.xmb.app.network.NetWorkUrl;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,16 +1,13 @@
-package com.xmb.demo.activity.clock;
+package com.xmb.app.activity.clock;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.xmb.demo.R;
-import com.xmb.demo.utils.SystemUtils;
-
+import com.xmb.app.R;
+import com.xmb.app.utils.SystemUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;

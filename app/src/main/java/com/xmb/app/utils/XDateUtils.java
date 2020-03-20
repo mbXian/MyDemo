@@ -1,11 +1,8 @@
-package com.xmb.demo.utils;
+package com.xmb.app.utils;
 
-import com.xmb.demo.entity.ParseTimeDTO;
+import com.xmb.app.entity.ParseTimeDTO;
 
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 
 /**

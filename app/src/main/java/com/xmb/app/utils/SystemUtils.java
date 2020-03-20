@@ -1,4 +1,4 @@
-package com.xmb.demo.utils;
+package com.xmb.app.utils;
 
 import android.content.Context;
 import android.content.Intent;

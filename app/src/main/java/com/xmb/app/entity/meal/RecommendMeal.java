@@ -1,4 +1,4 @@
-package com.xmb.demo.entity.meal;
+package com.xmb.app.entity.meal;
 
 import android.text.TextUtils;
 

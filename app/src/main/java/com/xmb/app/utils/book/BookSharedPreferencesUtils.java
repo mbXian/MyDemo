@@ -1,4 +1,4 @@
-package com.xmb.demo.utils.book;
+package com.xmb.app.utils.book;
 
 import android.content.Context;
 import android.content.SharedPreferences;

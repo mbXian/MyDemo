@@ -1,14 +1,14 @@
-package com.xmb.demo.adapter.book;
+package com.xmb.app.adapter.book;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.xmb.demo.R;
-import com.xmb.demo.listener.book.BookRecycleViewItemClickListener;
-import com.xmb.demo.utils.book.BookSharedPreferencesUtils;
 
+import com.xmb.app.R;
+import com.xmb.app.listener.book.BookRecycleViewItemClickListener;
+import com.xmb.app.utils.book.BookSharedPreferencesUtils;
 import java.util.List;
 
 /**

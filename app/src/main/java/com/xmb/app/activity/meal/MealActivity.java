@@ -1,4 +1,4 @@
-package com.xmb.demo.activity.meal;
+package com.xmb.app.activity.meal;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,11 +6,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.xmb.demo.R;
-import com.xmb.demo.entity.meal.RecommendMeal;
-import com.xmb.demo.network.MyCallBack;
-import com.xmb.demo.network.NetClient;
-import com.xmb.demo.network.NetWorkUrl;
+import com.xmb.app.R;
+import com.xmb.app.entity.meal.RecommendMeal;
+import com.xmb.app.network.MyCallBack;
+import com.xmb.app.network.NetClient;
+import com.xmb.app.network.NetWorkUrl;
 
 import org.json.JSONException;
 import org.json.JSONObject;
