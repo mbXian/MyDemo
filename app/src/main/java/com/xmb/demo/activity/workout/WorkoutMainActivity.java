@@ -115,7 +115,8 @@ public class WorkoutMainActivity extends Activity {
                                             runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    uploadButton.setEnabled(false);
+                                                    startButton.setVisibility(View.VISIBLE);
+                                                    uploadButton.setVisibility(View.GONE);
                                                     Toast.makeText(WorkoutMainActivity.this, "Upload Success! Keep it!", Toast.LENGTH_LONG).show();
                                                 }
                                             });

@@ -4,23 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/refreshButton"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textColor="@color/workout_button_text_green"
-        android:background="@drawable/workout_round_corner"
-        android:text="Refresh"/>
+        android:id="@+id/topView">
+
+        <Button
+            android:id="@+id/refreshButton"
+            style="@style/workout_button_style"
+            android:text="Refresh"/>
+    </RelativeLayout>
+
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/refreshButton"
+        android:layout_below="@id/topView"
         android:layout_above="@id/bottomView"
-        android:layout_marginTop="10dp"
         android:editable="false"
         android:scrollbars="vertical"
         android:id="@+id/statisticsEditText"
@@ -34,26 +36,12 @@
 
         <Button
             android:id="@+id/uploadButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/workout_button_text_green"
-            android:background="@drawable/workout_round_corner"
+            style="@style/workout_button_style"
             android:text="Upload Daily Data"/>
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/workout_button_text_green"
-            android:background="@drawable/workout_round_corner"
+            style="@style/workout_button_style"
             android:text="Start"/>
     </RelativeLayout>
 
