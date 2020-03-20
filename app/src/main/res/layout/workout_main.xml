@@ -16,24 +16,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/refreshButton"
-        android:layout_above="@id/startButton"
+        android:layout_above="@id/bottomView"
         android:enabled="false"
         android:id="@+id/statisticsEditText"
         />
-    <Button
-        android:id="@+id/uploadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Upload Daily Data"/>
 
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Start"/>
+        android:id="@+id/bottomView">
+
+        <Button
+            android:id="@+id/uploadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Upload Daily Data"/>
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Start"/>
+    </RelativeLayout>
 
 </RelativeLayout>
