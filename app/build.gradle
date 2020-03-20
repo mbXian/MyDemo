@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.xmb.workout"
+        applicationId "com.xmb.meal"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1

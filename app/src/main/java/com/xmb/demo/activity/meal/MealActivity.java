@@ -1,4 +1,4 @@
-package com.xmb.demo;
+package com.xmb.demo.activity.meal;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import com.xmb.demo.R;
 import com.xmb.demo.entity.RecommendMeal;
 import com.xmb.demo.network.MyCallBack;
 import com.xmb.demo.network.NetClient;
@@ -26,8 +27,8 @@ import com.xmb.demo.network.NetWorkUrl;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+public class MealActivity extends AppCompatActivity {
+    private static final String TAG = "MealActivity";
     private TextView contentTextView;
 
     @Override
