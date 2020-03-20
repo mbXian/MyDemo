@@ -6,4 +6,6 @@
     <color name="clock_number_green">#70BE47</color>
     <color name="clock_backgroud_black">#000000</color>
     <color name="book_backgroud_yellow">#fff5cc</color>
+    <color name="workout_button_green">#57C461</color>
+    <color name="workout_button_text_green">#ffffff</color>
 </resources>

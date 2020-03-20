@@ -149,15 +149,15 @@ public class WorkoutMainActivity extends Activity {
 
     private void requestStatisticsData() {
         final StringBuilder statisticsDataStringBuilderToday = new StringBuilder();
-        statisticsDataStringBuilderToday.append("🏆 Statistics Today（今日数据统计）：\n");
+        statisticsDataStringBuilderToday.append("🏆 Statistics Today（今日数据统计）：\n\n");
 
         final StringBuilder statisticsDataStringBuilderTonow = new StringBuilder();
-        statisticsDataStringBuilderTonow.append("🏆 Statistics So Far（至今数据统计）：\n");
+        statisticsDataStringBuilderTonow.append("🏆 Statistics So Far（至今数据统计）：\n\n");
 
         NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TODAY_STATISTICS_URL, new JSONObject(), new MyCallBack() {
             @Override
             public void onFailure(int code) {
-                statisticsDataStringBuilderToday.append("＊ 获取失败！");
+                statisticsDataStringBuilderToday.append("＊ 获取失败！\n\n");
 
                 showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
@@ -178,12 +178,12 @@ public class WorkoutMainActivity extends Activity {
                                 JSONArray jsonArray = jsonObjectData.getJSONArray("statisticsEachTypeVOList");
 
                                 if (jsonArray.length() == 0 || duration == null || duration == 0) {
-                                    statisticsDataStringBuilderToday.append("＊ You have not train today. Come on!\n");
+                                    statisticsDataStringBuilderToday.append("＊ You have not train today. Come on!\n\n");
                                 } else {
-                                    statisticsDataStringBuilderToday.append("＊ Duration minutes（耗时分钟）：" + (duration / 60) + "\n");
+                                    statisticsDataStringBuilderToday.append("＊ Duration minutes（耗时分钟）：" + (duration / 60) + "\n\n");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject vo = (JSONObject)jsonArray.get(i);
-                                        statisticsDataStringBuilderToday.append(vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n");
+                                        statisticsDataStringBuilderToday.append(vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
                                     }
                                 }
 
@@ -196,7 +196,7 @@ public class WorkoutMainActivity extends Activity {
                     }
                 }
                 if (!requestDataSuccess) {
-                    statisticsDataStringBuilderToday.append("＊ 获取失败！");
+                    statisticsDataStringBuilderToday.append("＊ 获取失败！\n\n");
                 }
                 showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
@@ -205,7 +205,7 @@ public class WorkoutMainActivity extends Activity {
         NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TONOW_STATISTICS_URL, new JSONObject(), new MyCallBack() {
             @Override
             public void onFailure(int code) {
-                statisticsDataStringBuilderTonow.append("＊ 获取失败！");
+                statisticsDataStringBuilderTonow.append("＊ 获取失败！\n\n");
 
                 showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
@@ -230,14 +230,14 @@ public class WorkoutMainActivity extends Activity {
                                 JSONArray jsonArray = jsonObjectData.getJSONArray("statisticsEachTypeVOList");
 
                                 if (jsonArray.length() == 0 || duration == null || duration == 0) {
-                                    statisticsDataStringBuilderTonow.append("＊ You have not train so far. Come on!\n");
+                                    statisticsDataStringBuilderTonow.append("＊ You have not train so far. Come on!\n\n");
                                 } else {
-                                    statisticsDataStringBuilderTonow.append("＊ From " + XDateUtils.format(new Date(startTrainTime), XDateUtils.DATE_PATTERN) + " to " + XDateUtils.format(new Date(endTrainTime), XDateUtils.DATE_PATTERN) + "\n");
-                                    statisticsDataStringBuilderTonow.append("＊ Total train times（共锻炼次数）：" + times + "\n");
-                                    statisticsDataStringBuilderTonow.append("＊ Duration minutes（耗时分钟）：" + (duration / 60) + "\n");
+                                    statisticsDataStringBuilderTonow.append("＊ From " + XDateUtils.format(new Date(startTrainTime), XDateUtils.DATE_PATTERN) + " to " + XDateUtils.format(new Date(endTrainTime), XDateUtils.DATE_PATTERN) + "\n\n");
+                                    statisticsDataStringBuilderTonow.append("＊ Total train times（共锻炼次数）：" + times + "\n\n");
+                                    statisticsDataStringBuilderTonow.append("＊ Duration minutes（耗时分钟）：" + (duration / 60) + "\n\n");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject vo = (JSONObject)jsonArray.get(i);
-                                        statisticsDataStringBuilderTonow.append("＊ " + vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n");
+                                        statisticsDataStringBuilderTonow.append("＊ " + vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
                                     }
                                 }
 
@@ -250,7 +250,7 @@ public class WorkoutMainActivity extends Activity {
                     }
                 }
                 if (!requestDataSuccess) {
-                    statisticsDataStringBuilderTonow.append("＊ 获取失败！");
+                    statisticsDataStringBuilderTonow.append("＊ 获取失败！\n\n");
                 }
                 showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
