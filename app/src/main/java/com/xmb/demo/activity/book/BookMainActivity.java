@@ -1,4 +1,4 @@
-package com.xmb.demo.activity;
+package com.xmb.demo.activity.book;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,12 +9,12 @@ import android.text.TextUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.xmb.demo.R;
-import com.xmb.demo.adapter.BookRecycleAdapter;
-import com.xmb.demo.listener.BookRecycleViewItemClickListener;
+import com.xmb.demo.adapter.book.BookRecycleAdapter;
+import com.xmb.demo.listener.book.BookRecycleViewItemClickListener;
 import com.xmb.demo.network.MyCallBack;
 import com.xmb.demo.network.NetClient;
 import com.xmb.demo.network.NetWorkUrl;
-import com.xmb.demo.utils.BookSharedPreferencesUtils;
+import com.xmb.demo.utils.book.BookSharedPreferencesUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

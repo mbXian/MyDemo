@@ -1,4 +1,4 @@
-package com.xmb.demo;
+package com.xmb.demo.activity.clock;
 
 import android.content.Context;
 import android.nfc.Tag;
@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.xmb.demo.R;
 import com.xmb.demo.utils.SystemUtils;
 
 import java.text.SimpleDateFormat;
