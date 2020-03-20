@@ -1,5 +1,7 @@
 package com.xmb.demo.utils;
 
+import com.xmb.demo.entity.ParseTimeDTO;
+
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -53,26 +55,6 @@ public class XDateUtils {
     }
 
     /**
-     * LocalDateTime to Date
-     * @param localDateTime
-     * @return
-     */
-    public static Date convertFromLocalDateTimeToDate(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
-    /**
-     * Date to LocalDateTime
-     * @param date
-     * @return
-     */
-    public static LocalDateTime convertFromDateToLocalDateTime(Date date) {
-        return Instant.ofEpochMilli(date.getTime())
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-    }
-
-    /**
      * 获取一天的开始时间
      * @param date
      * @return
@@ -104,5 +86,74 @@ public class XDateUtils {
 
         }
         return date;
+    }
+
+    public static int MILLISECONDS_A_SECOND = 1000;
+    public static int SECONDS_A_MINUTE = 60;
+    public static int MINUTES_A_HOUR = 60;
+    public static int HOURS_A_DAY = 24;
+    public static int DAYS_A_WEEK = 7;
+    public static int WEEKS_A_MONTH = 4;
+    public static int DAYS_A_MONTH = 30;
+    public static int MONTHES_A_YEAR = 12;
+
+    public static ParseTimeDTO calculateAndParseTime(long time) {
+        ParseTimeDTO dto = new ParseTimeDTO();
+        if (time <= 0) {
+            return dto;
+        }
+
+        dto.setMilliSeconds(time % MILLISECONDS_A_SECOND);
+        time = (time - dto.getMilliSeconds()) / MILLISECONDS_A_SECOND;
+
+        dto.setSeconds(time % SECONDS_A_MINUTE);
+        time = (time - dto.getSeconds()) / SECONDS_A_MINUTE;
+
+        dto.setMinutes(time % MINUTES_A_HOUR);
+        time = (time - dto.getMinutes()) / MINUTES_A_HOUR;
+
+        dto.setHours(time % HOURS_A_DAY);
+        time = (time - dto.getHours()) / HOURS_A_DAY;
+
+        dto.setWeeks(time % DAYS_A_WEEK);
+
+        dto.setMonthes(time % DAYS_A_MONTH);
+        time = (time - dto.getMonthes()) / DAYS_A_MONTH;
+
+        dto.setYears(time % MONTHES_A_YEAR);
+
+        return dto;
+    }
+
+    public static String parseTimeIfLowThenTen(long number) {
+        if (number < 10) {
+            return "0" + number;
+        } else {
+            return number + "";
+        }
+    }
+
+    public static String parseTimeString(long time) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ParseTimeDTO parseTimeDTO = XDateUtils.calculateAndParseTime(time);
+        if (parseTimeDTO.getYears() > 0) {
+            stringBuilder.append(XDateUtils.parseTimeIfLowThenTen(parseTimeDTO.getYears())).append("年");
+        }
+        if (parseTimeDTO.getMonthes() > 0) {
+            stringBuilder.append(XDateUtils.parseTimeIfLowThenTen(parseTimeDTO.getMonthes())).append("月");
+        }
+        if (parseTimeDTO.getDays() > 0) {
+            stringBuilder.append(XDateUtils.parseTimeIfLowThenTen(parseTimeDTO.getDays())).append("日");
+        }
+        if (parseTimeDTO.getHours() > 0) {
+            stringBuilder.append(XDateUtils.parseTimeIfLowThenTen(parseTimeDTO.getHours())).append("时");
+        }
+        if (parseTimeDTO.getMinutes() > 0) {
+            stringBuilder.append(XDateUtils.parseTimeIfLowThenTen(parseTimeDTO.getMinutes())).append("分");
+        }
+        if (parseTimeDTO.getSeconds() > 0) {
+            stringBuilder.append(XDateUtils.parseTimeIfLowThenTen(parseTimeDTO.getSeconds())).append("秒");
+        }
+        return stringBuilder.toString();
     }
 }

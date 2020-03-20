@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.xmb.demo.R;
+import com.xmb.demo.entity.ParseTimeDTO;
 import com.xmb.demo.network.MyCallBack;
 import com.xmb.demo.network.NetClient;
 import com.xmb.demo.network.NetWorkUrl;
@@ -23,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Author by Ben
@@ -36,6 +39,9 @@ public class WorkoutMainActivity extends Activity {
     private Button startButton;
     private Button refreshButton;
     private EditText statisticsEditText;
+    private Date startDate;
+
+    private Timer timer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +51,7 @@ public class WorkoutMainActivity extends Activity {
         final JSONObject paramJsonObject = new JSONObject();
 
         uploadButton = findViewById(R.id.uploadButton);
+        uploadButton.setText("Upload");
         startButton = findViewById(R.id.startButton);
         refreshButton = findViewById(R.id.refreshButton);
         statisticsEditText = findViewById(R.id.statisticsEditText);
@@ -60,7 +67,22 @@ public class WorkoutMainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 try {
-                    paramJsonObject.put("trainTimeMilliSec", new Date().getTime());
+                    startDate = new Date();
+
+                    timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    uploadButton.setText(XDateUtils.parseTimeString(System.currentTimeMillis() - startDate.getTime()));
+                                }
+                            });
+
+                        }
+                    }, 1000, 1000);
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -94,6 +116,7 @@ public class WorkoutMainActivity extends Activity {
                         }
 
                         try {
+                            paramJsonObject.put("trainTimeMilliSec", startDate.getTime());
                             paramJsonObject.put("password", uploadPasswordEditText.getText());
                         } catch (Exception e) {
 
@@ -117,6 +140,11 @@ public class WorkoutMainActivity extends Activity {
                                                 public void run() {
                                                     startButton.setVisibility(View.VISIBLE);
                                                     uploadButton.setVisibility(View.GONE);
+                                                    uploadButton.setText("Upload");
+
+                                                    timer.cancel();
+                                                    timer = null;
+
                                                     Toast.makeText(WorkoutMainActivity.this, "Upload Success! Keep it!", Toast.LENGTH_LONG).show();
                                                 }
                                             });
@@ -181,7 +209,7 @@ public class WorkoutMainActivity extends Activity {
                                 if (jsonArray.length() == 0 || duration == null || duration == 0) {
                                     statisticsDataStringBuilderToday.append("＊ You have not train today. Come on!\n\n");
                                 } else {
-                                    statisticsDataStringBuilderToday.append("＊ Duration minutes（耗时分钟）：" + (duration / 60) + "\n\n");
+                                    statisticsDataStringBuilderToday.append("＊ Duration（耗时）：" + XDateUtils.parseTimeString(duration * 1000) + "\n\n");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject vo = (JSONObject)jsonArray.get(i);
                                         statisticsDataStringBuilderToday.append(vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
@@ -235,7 +263,7 @@ public class WorkoutMainActivity extends Activity {
                                 } else {
                                     statisticsDataStringBuilderTonow.append("＊ From " + XDateUtils.format(new Date(startTrainTime), XDateUtils.DATE_PATTERN) + " to " + XDateUtils.format(new Date(endTrainTime), XDateUtils.DATE_PATTERN) + "\n\n");
                                     statisticsDataStringBuilderTonow.append("＊ Total train times（共锻炼次数）：" + times + "\n\n");
-                                    statisticsDataStringBuilderTonow.append("＊ Duration minutes（耗时分钟）：" + (duration / 60) + "\n\n");
+                                    statisticsDataStringBuilderTonow.append("＊ Duration（耗时）：" + XDateUtils.parseTimeString(duration * 1000) + "\n\n");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject vo = (JSONObject)jsonArray.get(i);
                                         statisticsDataStringBuilderTonow.append("＊ " + vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
