@@ -208,7 +208,7 @@ public class WorkoutMainActivity extends Activity {
                                     statisticsDataStringBuilderToday.append("＊ Duration（耗时）：" + XDateUtils.parseTimeString(duration * 1000) + "\n\n");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject vo = (JSONObject)jsonArray.get(i);
-                                        statisticsDataStringBuilderToday.append(vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
+                                        statisticsDataStringBuilderToday.append("＊ " + vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
                                     }
                                 }
 
