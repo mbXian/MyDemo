@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.xmb.app.R;
 import com.xmb.app.network.MyCallBack;
 import com.xmb.app.network.NetClient;
@@ -19,6 +23,8 @@ import com.xmb.app.utils.XDateUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,6 +45,11 @@ public class WorkoutMainActivity extends Activity {
 
     private Timer timer;
 
+    //声明AMapLocationClient类对象
+    public AMapLocationClient mLocationClient = null;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +69,28 @@ public class WorkoutMainActivity extends Activity {
                 requestStatisticsData();
             }
         });
+
+        //初始化定位
+        mLocationClient = new AMapLocationClient(getApplicationContext());
+        //声明定位回调监听器
+        AMapLocationListener mAMapLocationListener = new AMapLocationListener(){
+            @Override
+            public void onLocationChanged(AMapLocation amapLocation) {
+                latitude = BigDecimal.valueOf(amapLocation.getLatitude());
+                longitude = BigDecimal.valueOf(amapLocation.getLongitude());
+            }
+        };
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mAMapLocationListener);
+        AMapLocationClientOption option = new AMapLocationClientOption();
+        //设置是否返回地址信息（默认返回地址信息）
+        option.setNeedAddress(true);
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationClient.setLocationOption(option);
+        //设置场景模式后最好调用一次stop，再调用start以保证场景模式生效
+        mLocationClient.stopLocation();
+        mLocationClient.startLocation();
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +147,12 @@ public class WorkoutMainActivity extends Activity {
                         try {
                             paramJsonObject.put("trainTimeMilliSec", startDate.getTime());
                             paramJsonObject.put("password", uploadPasswordEditText.getText());
+                            if (latitude != null) {
+                                paramJsonObject.put("latitude", latitude);
+                            }
+                            if (longitude != null) {
+                                paramJsonObject.put("longitude", longitude);
+                            }
                         } catch (Exception e) {
 
                         }

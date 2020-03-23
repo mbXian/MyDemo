@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name_meal">今晚食咩</string>
     <string name="app_name_book">在线阅读</string>
-    <string name="app_name_workout">workout</string>
+    <string name="app_name_workout">Workout</string>
     <string name="action_settings">Settings</string>
 </resources>
