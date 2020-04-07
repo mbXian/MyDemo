@@ -15,6 +15,7 @@ public class NetWorkUrl {
     //推荐餐饮
     public static final String Recommend_Meal_Url = "/meal/recommend";
 
+    public static final String Book_info_Url = "/book/getBookInfo";
     public static final String Book_detail_Url = "/book/getContent";
     public static final String Book_count_Url = "/book/getTotalChapter";
     public static final String WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL = "/workoutRecord/enterDailyDataTemporary";

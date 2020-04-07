@@ -66,7 +66,7 @@ public class BookMainActivity extends Activity {
         });
         recyclerView.setAdapter(mAdapter);
 
-        NetClient.getNetClient().callNetPost(NetWorkUrl.Book_count_Url, new JSONObject(), new MyCallBack() {
+        NetClient.getNetClient().callNetPost(NetWorkUrl.Book_info_Url, new JSONObject(), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 runOnUiThread(new Runnable() {
@@ -84,28 +84,48 @@ public class BookMainActivity extends Activity {
                         JSONObject jsonObject = new JSONObject(json);
                         int code = jsonObject.getInt("code");
                         if (code == 200) {
-                            final Long totalChapter = jsonObject.getLong("data");
-                            if (totalChapter != null) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        for (int i = 0; i < totalChapter; i++) {
-                                            dataList.add(i + "");
-                                        }
-                                        mAdapter.notifyDataSetChanged();
+                            JSONObject dataJSONObject = jsonObject.getJSONObject("data");
+                            if (dataJSONObject != null) {
 
-                                        int chapterNum = BookSharedPreferencesUtils.instants(BookMainActivity.this).getChapterNum();
-                                        recyclerView.scrollToPosition(chapterNum);
-                                    }
-                                });
+                                final Long totalChapter = dataJSONObject.getLong("chapterTotal");
+                                final String name = dataJSONObject.getString("name");
+                                final String author = dataJSONObject.getString("author");
+
+                                if (totalChapter != null) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            for (int i = 0; i < totalChapter; i++) {
+                                                dataList.add(i + "");
+                                            }
+                                            mAdapter.notifyDataSetChanged();
+
+                                            int chapterNum = BookSharedPreferencesUtils.instants(BookMainActivity.this).getChapterNum();
+                                            recyclerView.scrollToPosition(chapterNum);
+
+                                            titleTextView.setText("《" + name + "》\n作者：" + author);
+                                        }
+                                    });
+                                } else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(BookMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+
                             } else {
+
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         Toast.makeText(BookMainActivity.this, "请求失败，请重试", Toast.LENGTH_SHORT).show();
                                     }
                                 });
+
                             }
+
                         } else {
                             runOnUiThread(new Runnable() {
                                 @Override
