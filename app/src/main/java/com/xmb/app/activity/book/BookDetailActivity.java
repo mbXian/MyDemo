@@ -64,7 +64,7 @@ public class BookDetailActivity extends Activity {
                     try {
                         JSONObject jsonObject = new JSONObject(json);
                         int code = jsonObject.getInt("code");
-                        if (code == 200) {
+                        if (code == 0 || code == 200) {
                             JSONObject data = jsonObject.getJSONObject("data");
                             if (data != null) {
                                 final String content = data.getString("content");
