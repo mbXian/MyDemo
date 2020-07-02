@@ -18,7 +18,7 @@ public class NetWorkUrl {
     public static final String Book_info_Url = "/book/getBookInfo";
     public static final String Book_detail_Url = "/book/getContent";
     public static final String Book_count_Url = "/book/getTotalChapter";
-    public static final String WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL = "/workout/workoutRecord/enterDailyDataTemporary";
-    public static final String WORKOUT_TODAY_STATISTICS_URL = "/workout/workoutRecord/todayStatistics";
-    public static final String WORKOUT_TONOW_STATISTICS_URL = "/workout/workoutRecord/toNowStatistics";
+    public static final String WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL = "/workout/workoutrecord/enterDailyDataTemporary";
+    public static final String WORKOUT_TODAY_STATISTICS_URL = "/workout/workoutrecord/todayStatistics";
+    public static final String WORKOUT_TONOW_STATISTICS_URL = "/workout/workoutrecord/toNowStatistics";
 }

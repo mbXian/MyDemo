@@ -169,7 +169,7 @@ public class WorkoutMainActivity extends Activity {
                                     try {
                                         JSONObject jsonObject = new JSONObject(json);
                                         int code = jsonObject.getInt("code");
-                                        if (code == 200) {
+                                        if (code == 0 || code == 200) {
                                             runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -235,7 +235,7 @@ public class WorkoutMainActivity extends Activity {
                     try {
                         JSONObject jsonObject = new JSONObject(json);
                         int code = jsonObject.getInt("code");
-                        if (code == 200) {
+                        if (code == 0 || code == 200) {
                             JSONObject jsonObjectData = jsonObject.getJSONObject("data");
                             if (jsonObjectData != null) {
                                 Long duration = jsonObjectData.getLong("duration");
@@ -283,7 +283,7 @@ public class WorkoutMainActivity extends Activity {
                     try {
                         JSONObject jsonObject = new JSONObject(json);
                         int code = jsonObject.getInt("code");
-                        if (code == 200) {
+                        if (code == 0 || code == 200) {
                             JSONObject jsonObjectData = jsonObject.getJSONObject("data");
                             if (jsonObjectData != null) {
                                 Long duration = jsonObjectData.getLong("duration");
