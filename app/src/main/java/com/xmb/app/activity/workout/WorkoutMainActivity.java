@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -146,6 +147,7 @@ public class WorkoutMainActivity extends Activity {
 
                         try {
                             paramJsonObject.put("trainTimeMilliSec", startDate.getTime());
+                            paramJsonObject.put("finishTimeMilliSec", new Date().getTime());
                             paramJsonObject.put("password", uploadPasswordEditText.getText());
                             if (latitude != null) {
                                 paramJsonObject.put("latitude", latitude);
@@ -157,6 +159,7 @@ public class WorkoutMainActivity extends Activity {
 
                         }
 
+//                        Log.i("xmb", "paramJsonObject = " + paramJsonObject.toString());
                         NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL, paramJsonObject, new MyCallBack() {
                             @Override
                             public void onFailure(int code) {

@@ -34,7 +34,7 @@
         <activity
             android:name="com.xmb.app.activity.workout.WorkoutMainActivity"
             android:screenOrientation="portrait"
-            android:label="@string/app_name_book"
+            android:label="@string/app_name_workout"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,8 +42,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.xmb.app.activity.book.BookDetailActivity"></activity>
 
         <service android:name="com.amap.api.location.APSService"></service>
 
