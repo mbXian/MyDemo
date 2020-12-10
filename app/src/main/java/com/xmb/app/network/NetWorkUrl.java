@@ -25,4 +25,5 @@ public class NetWorkUrl {
     public static final String WORKOUT_TODAY_STATISTICS_URL = "/workout/workoutrecord/todayStatistics";
     public static final String WORKOUT_TONOW_STATISTICS_URL = "/workout/workoutrecord/toNowStatistics";
     public static final String WORKOUT_DAYS_SATURATION_URL = "/workout/workoutrecord/daysSaturation";
+    public static final String WORKOUT_KEEPON_DAYS_URL = "/workout/workoutrecord/keepOnDays";
 }

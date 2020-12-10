@@ -216,6 +216,9 @@ public class WorkoutMainActivity extends Activity {
         final StringBuilder daysSaturationStringBuilder = new StringBuilder();
         daysSaturationStringBuilder.append("🏆 过去" + saturationDays + "天锻炼饱和率");
 
+        final StringBuilder keepOnDaysStringBuilder = new StringBuilder();
+        keepOnDaysStringBuilder.append("🏆 ");
+
         final StringBuilder statisticsDataStringBuilderToday = new StringBuilder();
         statisticsDataStringBuilderToday.append("🏆 Statistics Today（今日数据统计）：\n\n");
 
@@ -226,9 +229,9 @@ public class WorkoutMainActivity extends Activity {
         NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TODAY_STATISTICS_URL, new JSONObject(), new MyCallBack() {
             @Override
             public void onFailure(int code) {
-                statisticsDataStringBuilderToday.append("＊ 获取失败！\n\n");
+                statisticsDataStringBuilderToday.append("    ＊ 获取失败！\n\n");
 
-                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
 
             @Override
@@ -247,12 +250,12 @@ public class WorkoutMainActivity extends Activity {
                                 JSONArray jsonArray = jsonObjectData.getJSONArray("statisticsEachTypeVOList");
 
                                 if (jsonArray.length() == 0 || duration == null || duration == 0) {
-                                    statisticsDataStringBuilderToday.append("＊ You have not train today. Come on!\n\n");
+                                    statisticsDataStringBuilderToday.append("    ＊ You have not train today. Come on!\n\n");
                                 } else {
-                                    statisticsDataStringBuilderToday.append("＊ Duration（耗时）：" + XDateUtils.parseTimeString(duration * 1000) + "\n\n");
+                                    statisticsDataStringBuilderToday.append("    ＊ Duration（耗时）：" + XDateUtils.parseTimeString(duration * 1000) + "\n\n");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject vo = (JSONObject)jsonArray.get(i);
-                                        statisticsDataStringBuilderToday.append("＊ " + vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
+                                        statisticsDataStringBuilderToday.append("    ＊ " + vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
                                     }
                                 }
 
@@ -265,9 +268,9 @@ public class WorkoutMainActivity extends Activity {
                     }
                 }
                 if (!requestDataSuccess) {
-                    statisticsDataStringBuilderToday.append("＊ 获取失败！\n\n");
+                    statisticsDataStringBuilderToday.append("    ＊ 获取失败！\n\n");
                 }
-                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
         });
 
@@ -275,9 +278,9 @@ public class WorkoutMainActivity extends Activity {
         NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TONOW_STATISTICS_URL, new JSONObject(), new MyCallBack() {
             @Override
             public void onFailure(int code) {
-                statisticsDataStringBuilderTonow.append("＊ 获取失败！\n\n");
+                statisticsDataStringBuilderTonow.append("    ＊ 获取失败！\n\n");
 
-                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
 
             @Override
@@ -300,14 +303,14 @@ public class WorkoutMainActivity extends Activity {
                                 JSONArray jsonArray = jsonObjectData.getJSONArray("statisticsEachTypeVOList");
 
                                 if (jsonArray.length() == 0 || duration == null || duration == 0) {
-                                    statisticsDataStringBuilderTonow.append("＊ You have not train so far. Come on!\n\n");
+                                    statisticsDataStringBuilderTonow.append("    ＊ You have not train so far. Come on!\n\n");
                                 } else {
-                                    statisticsDataStringBuilderTonow.append("＊ From " + XDateUtils.format(new Date(startTrainTime), XDateUtils.DATE_PATTERN) + " to " + XDateUtils.format(new Date(endTrainTime), XDateUtils.DATE_PATTERN) + "\n\n");
-                                    statisticsDataStringBuilderTonow.append("＊ Total train times（共锻炼次数）：" + times + "\n\n");
-                                    statisticsDataStringBuilderTonow.append("＊ Duration（耗时）：" + XDateUtils.parseTimeString(duration * 1000) + "\n\n");
+                                    statisticsDataStringBuilderTonow.append("    ＊ From " + XDateUtils.format(new Date(startTrainTime), XDateUtils.DATE_PATTERN) + " to " + XDateUtils.format(new Date(endTrainTime), XDateUtils.DATE_PATTERN) + "\n\n");
+                                    statisticsDataStringBuilderTonow.append("    ＊ Total train times（共锻炼次数）：" + times + "\n\n");
+                                    statisticsDataStringBuilderTonow.append("    ＊ Duration（耗时）：" + XDateUtils.parseTimeString(duration * 1000) + "\n\n");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject vo = (JSONObject)jsonArray.get(i);
-                                        statisticsDataStringBuilderTonow.append("＊ " + vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
+                                        statisticsDataStringBuilderTonow.append("    ＊ " + vo.getString("name") + "（" + vo.getString("nameCN") + "）: " + vo.getLong("countTotal") + "\n\n");
                                     }
                                 }
 
@@ -319,9 +322,9 @@ public class WorkoutMainActivity extends Activity {
                     }
                 }
                 if (!requestDataSuccess) {
-                    statisticsDataStringBuilderTonow.append("＊ 获取失败！\n\n");
+                    statisticsDataStringBuilderTonow.append("    ＊ 获取失败！\n\n");
                 }
-                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
         });
 
@@ -336,7 +339,7 @@ public class WorkoutMainActivity extends Activity {
             @Override
             public void onFailure(int code) {
                 daysSaturationStringBuilder.append("获取失败！\n\n");
-                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
 
             @Override
@@ -351,13 +354,46 @@ public class WorkoutMainActivity extends Activity {
                             if (jsonObjectData != null) {
                                 double daysSaturation = jsonObjectData.getDouble("daysSaturation");
                                 daysSaturationStringBuilder.append("：" + daysSaturation * 100.0 + "%\n\n");
-                                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                                showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
                             }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                         daysSaturationStringBuilder.append("获取失败！\n\n");
-                        showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                        showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                    }
+                }
+
+            }
+        });
+
+        //已连续锻炼天数
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_KEEPON_DAYS_URL, params, new MyCallBack() {
+            @Override
+            public void onFailure(int code) {
+                keepOnDaysStringBuilder.append("获取已连续锻炼天数失败！\n\n");
+                showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+            }
+
+            @Override
+            public void onResponse(String json) {
+
+                if (!TextUtils.isEmpty(json)) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        int code = jsonObject.getInt("code");
+                        if (code == 0 || code == 200) {
+                            JSONObject jsonObjectData = jsonObject.getJSONObject("data");
+                            if (jsonObjectData != null) {
+                                int keepOnDays = jsonObjectData.getInt("keepOnDays");
+                                keepOnDaysStringBuilder.append("已连续锻炼" + keepOnDays + "天\n\n");
+                                showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        keepOnDaysStringBuilder.append("获取已连续锻炼天数失败！\n\n");
+                        showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
                     }
                 }
 
@@ -365,11 +401,11 @@ public class WorkoutMainActivity extends Activity {
         });
     }
 
-    private void showStatisticsData(final StringBuilder daysSaturationStringBuilder, final StringBuilder statisticsDataStringBuilderToday, final StringBuilder statisticsDataStringBuilderTonow) {
+    private void showStatisticsData(final StringBuilder keepOnDaysStringBuilder, final StringBuilder daysSaturationStringBuilder, final StringBuilder statisticsDataStringBuilderToday, final StringBuilder statisticsDataStringBuilderTonow) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                statisticsEditText.setText(daysSaturationStringBuilder.toString() + "\n\n" + statisticsDataStringBuilderToday.toString() + "\n\n" + statisticsDataStringBuilderTonow.toString());
+                statisticsEditText.setText(keepOnDaysStringBuilder.toString() + "\n\n" + daysSaturationStringBuilder.toString() + "\n\n" + statisticsDataStringBuilderToday.toString() + "\n\n" + statisticsDataStringBuilderTonow.toString());
             }
         });
     }
