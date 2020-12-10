@@ -370,7 +370,7 @@ public class WorkoutMainActivity extends Activity {
                             JSONObject jsonObjectData = jsonObject.getJSONObject("data");
                             if (jsonObjectData != null) {
                                 double daysSaturation = jsonObjectData.getDouble("daysSaturation");
-                                daysSaturationStringBuilder.append("：" + daysSaturation * 100.0 + "%\n\n");
+                                daysSaturationStringBuilder.append("：" + String.format("%.2f", daysSaturation * 100.0) + "%\n\n");
                                 showStatisticsData(keepOnDaysStringBuilder, daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
                             }
                         }
