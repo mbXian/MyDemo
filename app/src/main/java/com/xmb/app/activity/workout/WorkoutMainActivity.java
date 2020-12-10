@@ -48,6 +48,9 @@ public class WorkoutMainActivity extends Activity {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
+    //hardCode用户手机号
+    final static String USER_MOBILE = "18824140606";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +149,7 @@ public class WorkoutMainActivity extends Activity {
                             paramJsonObject.put("trainTimeMilliSec", startDate.getTime());
                             paramJsonObject.put("finishTimeMilliSec", new Date().getTime());
                             paramJsonObject.put("password", uploadPasswordEditText.getText());
+                            paramJsonObject.put("userMobile", USER_MOBILE);
                             if (latitude != null) {
                                 paramJsonObject.put("latitude", latitude);
                             }
@@ -226,7 +230,13 @@ public class WorkoutMainActivity extends Activity {
         statisticsDataStringBuilderTonow.append("🏆 Statistics So Far（至今数据统计）：\n\n");
 
         //统计今日锻炼数据
-        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TODAY_STATISTICS_URL, new JSONObject(), new MyCallBack() {
+        JSONObject params1 = new JSONObject();
+        try {
+            params1.put("userMobile", USER_MOBILE);
+        } catch (Exception e) {
+
+        }
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TODAY_STATISTICS_URL, params1, new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 statisticsDataStringBuilderToday.append("    ＊ 获取失败！\n\n");
@@ -275,7 +285,13 @@ public class WorkoutMainActivity extends Activity {
         });
 
         //统计至今锻炼数据
-        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TONOW_STATISTICS_URL, new JSONObject(), new MyCallBack() {
+        JSONObject params2 = new JSONObject();
+        try {
+            params2.put("userMobile", USER_MOBILE);
+        } catch (Exception e) {
+
+        }
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TONOW_STATISTICS_URL, params2, new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 statisticsDataStringBuilderTonow.append("    ＊ 获取失败！\n\n");
@@ -329,13 +345,14 @@ public class WorkoutMainActivity extends Activity {
         });
 
         //过期n天训练饱和率
-        JSONObject params = new JSONObject();
+        JSONObject params3 = new JSONObject();
         try {
-            params.put("days", saturationDays);
+            params3.put("userMobile", USER_MOBILE);
+            params3.put("days", saturationDays);
         } catch (Exception e) {
 
         }
-        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAYS_SATURATION_URL, params, new MyCallBack() {
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAYS_SATURATION_URL, params3, new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 daysSaturationStringBuilder.append("获取失败！\n\n");
@@ -368,7 +385,13 @@ public class WorkoutMainActivity extends Activity {
         });
 
         //已连续锻炼天数
-        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_KEEPON_DAYS_URL, params, new MyCallBack() {
+        JSONObject params4 = new JSONObject();
+        try {
+            params4.put("userMobile", USER_MOBILE);
+        } catch (Exception e) {
+
+        }
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_KEEPON_DAYS_URL, params4, new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 keepOnDaysStringBuilder.append("获取已连续锻炼天数失败！\n\n");
