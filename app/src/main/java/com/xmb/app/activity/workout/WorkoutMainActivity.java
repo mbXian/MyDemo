@@ -6,12 +6,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -24,7 +22,6 @@ import com.xmb.app.utils.XDateUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Timer;
@@ -159,7 +156,6 @@ public class WorkoutMainActivity extends Activity {
 
                         }
 
-//                        Log.i("xmb", "paramJsonObject = " + paramJsonObject.toString());
                         NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL, paramJsonObject, new MyCallBack() {
                             @Override
                             public void onFailure(int code) {
@@ -215,18 +211,24 @@ public class WorkoutMainActivity extends Activity {
     }
 
     private void requestStatisticsData() {
+        //过去n天锻炼饱和率
+        final Integer saturationDays = 7;
+        final StringBuilder daysSaturationStringBuilder = new StringBuilder();
+        daysSaturationStringBuilder.append("🏆 过去" + saturationDays + "天锻炼饱和率");
+
         final StringBuilder statisticsDataStringBuilderToday = new StringBuilder();
         statisticsDataStringBuilderToday.append("🏆 Statistics Today（今日数据统计）：\n\n");
 
         final StringBuilder statisticsDataStringBuilderTonow = new StringBuilder();
         statisticsDataStringBuilderTonow.append("🏆 Statistics So Far（至今数据统计）：\n\n");
 
+        //统计今日锻炼数据
         NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TODAY_STATISTICS_URL, new JSONObject(), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 statisticsDataStringBuilderToday.append("＊ 获取失败！\n\n");
 
-                showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
 
             @Override
@@ -265,16 +267,17 @@ public class WorkoutMainActivity extends Activity {
                 if (!requestDataSuccess) {
                     statisticsDataStringBuilderToday.append("＊ 获取失败！\n\n");
                 }
-                showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
         });
 
+        //统计至今锻炼数据
         NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TONOW_STATISTICS_URL, new JSONObject(), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 statisticsDataStringBuilderTonow.append("＊ 获取失败！\n\n");
 
-                showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
             }
 
             @Override
@@ -313,22 +316,60 @@ public class WorkoutMainActivity extends Activity {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-
                     }
                 }
                 if (!requestDataSuccess) {
                     statisticsDataStringBuilderTonow.append("＊ 获取失败！\n\n");
                 }
-                showStatisticsData(statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+            }
+        });
+
+        //过期n天训练饱和率
+        JSONObject params = new JSONObject();
+        try {
+            params.put("days", saturationDays);
+        } catch (Exception e) {
+
+        }
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAYS_SATURATION_URL, params, new MyCallBack() {
+            @Override
+            public void onFailure(int code) {
+                daysSaturationStringBuilder.append("获取失败！\n\n");
+                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+            }
+
+            @Override
+            public void onResponse(String json) {
+
+                if (!TextUtils.isEmpty(json)) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        int code = jsonObject.getInt("code");
+                        if (code == 0 || code == 200) {
+                            JSONObject jsonObjectData = jsonObject.getJSONObject("data");
+                            if (jsonObjectData != null) {
+                                double daysSaturation = jsonObjectData.getDouble("daysSaturation");
+                                daysSaturationStringBuilder.append("：" + daysSaturation * 100.0 + "%\n\n");
+                                showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        daysSaturationStringBuilder.append("获取失败！\n\n");
+                        showStatisticsData(daysSaturationStringBuilder, statisticsDataStringBuilderToday, statisticsDataStringBuilderTonow);
+                    }
+                }
+
             }
         });
     }
 
-    private void showStatisticsData(final StringBuilder statisticsDataStringBuilderToday, final StringBuilder statisticsDataStringBuilderTonow) {
+    private void showStatisticsData(final StringBuilder daysSaturationStringBuilder, final StringBuilder statisticsDataStringBuilderToday, final StringBuilder statisticsDataStringBuilderTonow) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                statisticsEditText.setText(statisticsDataStringBuilderToday.toString() + "\n\n" + statisticsDataStringBuilderTonow.toString());
+                statisticsEditText.setText(daysSaturationStringBuilder.toString() + "\n\n" + statisticsDataStringBuilderToday.toString() + "\n\n" + statisticsDataStringBuilderTonow.toString());
             }
         });
     }
