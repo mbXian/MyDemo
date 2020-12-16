@@ -184,6 +184,9 @@ public class WorkoutMainActivity extends Activity {
                                                     timer = null;
 
                                                     Toast.makeText(WorkoutMainActivity.this, "Upload Success! Keep it!", Toast.LENGTH_LONG).show();
+
+                                                    //刷新数据
+                                                    requestStatisticsData();
                                                 }
                                             });
                                         } else {
@@ -211,23 +214,31 @@ public class WorkoutMainActivity extends Activity {
             }
         });
 
+        //刷新数据
         requestStatisticsData();
     }
 
+    /**
+     * 刷新数据
+     */
     private void requestStatisticsData() {
         //过去n天锻炼饱和率
         final Integer saturationDays = 7;
         final StringBuilder daysSaturationStringBuilder = new StringBuilder();
-        daysSaturationStringBuilder.append("🏆 过去" + saturationDays + "天锻炼饱和率");
+        if (saturationDays == 7) {
+            daysSaturationStringBuilder.append("💪 过去一周锻炼饱和率");
+        } else {
+            daysSaturationStringBuilder.append("💪 过去" + saturationDays + "天锻炼饱和率");
+        }
 
         final StringBuilder keepOnDaysStringBuilder = new StringBuilder();
-        keepOnDaysStringBuilder.append("🏆 ");
+        keepOnDaysStringBuilder.append("💪 ");
 
         final StringBuilder statisticsDataStringBuilderToday = new StringBuilder();
-        statisticsDataStringBuilderToday.append("🏆 Statistics Today（今日数据统计）：\n\n");
+        statisticsDataStringBuilderToday.append("💪 Statistics Today（今日数据统计）：\n\n");
 
         final StringBuilder statisticsDataStringBuilderTonow = new StringBuilder();
-        statisticsDataStringBuilderTonow.append("🏆 Statistics So Far（至今数据统计）：\n\n");
+        statisticsDataStringBuilderTonow.append("💪 Statistics So Far（至今数据统计）：\n\n");
 
         //统计今日锻炼数据
         JSONObject params1 = new JSONObject();
