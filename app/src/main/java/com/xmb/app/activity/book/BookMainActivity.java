@@ -66,7 +66,7 @@ public class BookMainActivity extends Activity {
         });
         recyclerView.setAdapter(mAdapter);
 
-        NetClient.getNetClient().callNetPost(NetWorkUrl.Book_info_Url, new JSONObject(), new MyCallBack() {
+        NetClient.getNetClient().callNetPost(NetWorkUrl.Book_info_Url, new JSONObject(), getString(R.string.app_name_book), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 runOnUiThread(new Runnable() {

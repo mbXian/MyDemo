@@ -1,5 +1,8 @@
 package com.xmb.app.network;
 
+import android.app.Application;
+import android.content.Context;
+
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -19,10 +22,12 @@ import okhttp3.Response;
  */
 public class NetClient {
     private static NetClient netClient;
+
     private NetClient(){
         client = initOkHttpClient();
     }
     public final OkHttpClient client;
+
     private OkHttpClient initOkHttpClient(){
         //初始化的时候可以自定义一些参数
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -39,9 +44,15 @@ public class NetClient {
         return netClient;
     }
 
-    public void callNetGet(String url, final MyCallBack mCallback){
+    private void buildHeader(Request.Builder requestBuilder, String platform) {
+        requestBuilder.addHeader("Content-Type", "application/json;charset=UTF-8").addHeader("User-Agent", platform);
+    }
+
+    public void callNetGet(String url, String platform, final MyCallBack mCallback){
         String fullUrl = NetWorkUrl.Server_IP + url;
-        Request request = new Request.Builder().url(fullUrl).header("Content-Type", "application/json;charset=UTF-8").build();
+        Request.Builder builder = new Request.Builder().url(fullUrl);
+        buildHeader(builder, platform);
+        Request request = builder.build();
         Call call = getNetClient().initOkHttpClient().newCall(request);
         call.enqueue(new Callback() {
             @Override
@@ -64,15 +75,13 @@ public class NetClient {
         });
     }
 
-    public void callNetPost(String url, JSONObject paramsJSON, final MyCallBack mCallback){
+    public void callNetPost(String url, JSONObject paramsJSON, String platform, final MyCallBack mCallback){
         String fullUrl = NetWorkUrl.Server_IP + url;
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), paramsJSON.toString());
-        Request request = new Request.Builder()
-                .header("Content-Type", "application/json;charset=UTF-8")
-                .url(fullUrl)
-                .post(requestBody)
-                .build();
+        Request.Builder builder = new Request.Builder().url(fullUrl).post(requestBody);
+        buildHeader(builder, platform);
+        Request request = builder.build();
         Call call = getNetClient().initOkHttpClient().newCall(request);
 
         call.enqueue(new Callback() {

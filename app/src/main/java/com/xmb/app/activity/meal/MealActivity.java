@@ -36,7 +36,7 @@ public class MealActivity extends AppCompatActivity {
 
     //请求推荐餐饮
     private void requestRecommendMeal() {
-        NetClient.getNetClient().callNetGet(NetWorkUrl.Recommend_Meal_Url, new MyCallBack() {
+        NetClient.getNetClient().callNetGet(NetWorkUrl.Recommend_Meal_Url, this.getString(R.string.app_name_meal), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 //依据响应码判断下一步操作

@@ -47,7 +47,7 @@ public class BookDetailActivity extends Activity {
 
         }
 
-        NetClient.getNetClient().callNetPost(NetWorkUrl.Book_detail_Url, jsonObject, new MyCallBack() {
+        NetClient.getNetClient().callNetPost(NetWorkUrl.Book_detail_Url, jsonObject, getString(R.string.app_name_book), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 runOnUiThread(new Runnable() {

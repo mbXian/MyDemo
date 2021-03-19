@@ -160,7 +160,7 @@ public class WorkoutMainActivity extends Activity {
 
                         }
 
-                        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL, paramJsonObject, new MyCallBack() {
+                        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAILY_DATA_UPLOAD_TEMP_URL, paramJsonObject, getString(R.string.app_name_workout), new MyCallBack() {
                             @Override
                             public void onFailure(int code) {
                                 showErrorTips("请求失败，请重试");
@@ -247,7 +247,7 @@ public class WorkoutMainActivity extends Activity {
         } catch (Exception e) {
 
         }
-        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TODAY_STATISTICS_URL, params1, new MyCallBack() {
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TODAY_STATISTICS_URL, params1, getString(R.string.app_name_workout), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 statisticsDataStringBuilderToday.append("    ＊ 获取失败！\n\n");
@@ -302,7 +302,7 @@ public class WorkoutMainActivity extends Activity {
         } catch (Exception e) {
 
         }
-        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TONOW_STATISTICS_URL, params2, new MyCallBack() {
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_TONOW_STATISTICS_URL, params2, getString(R.string.app_name_workout), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 statisticsDataStringBuilderTonow.append("    ＊ 获取失败！\n\n");
@@ -363,7 +363,7 @@ public class WorkoutMainActivity extends Activity {
         } catch (Exception e) {
 
         }
-        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAYS_SATURATION_URL, params3, new MyCallBack() {
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_DAYS_SATURATION_URL, params3, getString(R.string.app_name_workout), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 daysSaturationStringBuilder.append("获取失败！\n\n");
@@ -402,7 +402,7 @@ public class WorkoutMainActivity extends Activity {
         } catch (Exception e) {
 
         }
-        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_KEEPON_DAYS_URL, params4, new MyCallBack() {
+        NetClient.getNetClient().callNetPost(NetWorkUrl.WORKOUT_KEEPON_DAYS_URL, params4, getString(R.string.app_name_workout), new MyCallBack() {
             @Override
             public void onFailure(int code) {
                 keepOnDaysStringBuilder.append("获取已连续锻炼天数失败！\n\n");
